@@ -500,7 +500,21 @@ padding:0 15px;
     width:100%;
     justify-content:center;
 }
+@media (max-width:768px){
 
+.status{
+    font-size:14px;
+    letter-spacing:2px;
+    height:50px;
+    text-align:center;
+    padding:0 10px;
+}
+
+.status .online{
+    margin-right:10px;
+}
+
+}
 }
 
 }
