@@ -122,39 +122,73 @@ loans.forEach((loan) => {
 });
 
 // =======================
-// STK PUSH
+// PAY BUTTON
 // =======================
 
-payBtn.addEventListener("click", () => {
+payBtn.addEventListener("click", async () => {
 
     const phoneNumber = stkPhone.value.trim();
 
+    // Remove commas and "KSh" from the fee
+    const amount = loanFee.innerHTML.replace(/[^\d]/g, "");
+
     if (phoneNumber.length < 10) {
         paymentStatus.style.color = "red";
-        paymentStatus.innerHTML = "Please enter a valid phone number.";
+        paymentStatus.innerHTML = "Please enter a valid M-Pesa number.";
         return;
     }
 
     paymentStatus.style.color = "#0ba84b";
     paymentStatus.innerHTML = "Sending STK Push...";
 
-    sendSTKPush(phoneNumber);
+    try {
 
-});
+        const response = await fetch(
+            "https://YOUR-BACKEND.onrender.com/api/stk",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    phone: phoneNumber,
+                    amount: Number(amount)
+                })
+            }
+        );
 
-// =======================
-// DARAJA PLACEHOLDER
-// =======================
+        const data = await response.json();
 
-function sendSTKPush(phoneNumber) {
+        if (response.ok) {
 
-    // Replace this section with your backend API call.
+            paymentStatus.style.color = "#0ba84b";
 
-    setTimeout(() => {
+            paymentStatus.innerHTML =
+                "✅ STK Push sent successfully. Check your phone and enter your M-Pesa PIN.";
+
+            console.log(data);
+
+        } else {
+
+            paymentStatus.style.color = "red";
+
+            paymentStatus.innerHTML =
+                data.message || "Unable to send STK Push.";
+
+            console.log(data);
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        paymentStatus.style.color = "red";
 
         paymentStatus.innerHTML =
-            "✅ STK Push sent successfully. Please check your phone and enter your M-Pesa PIN.";
+            "Unable to connect to the payment server.";
 
-    }, 3000);
+    }
 
+});
 }
