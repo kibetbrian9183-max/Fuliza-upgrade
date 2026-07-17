@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fuliza Boost Upgrade</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+
+</head>
+
+<body>
+
+<!-- Loading Screen -->
+
+<div id="loader">
+
+<div class="spinner"></div>
+
+<p>Checking Eligibility...</p>
+
+</div>
+
+<!-- Header -->
+
+<header>
+
+<div class="logo">
+
+<i class="fas fa-shield-alt"></i>
+
+Fuliza Boost
+
+</div>
+
+<div class="support">
+
+<i class="fas fa-headset"></i>
+
+24/7 Support
+
+</div>
+
+</header>
+
+<!-- Status -->
+
+<div class="status">
+
+<span class="online"></span>
+
+SYSTEM STATUS : ONLINE
+
+</div>
+
+<!-- Progress -->
+
+<div class="progress">
+
+<div class="step active">
+
+1
+
+<p>Eligibility</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="step">
+
+2
+
+<p>Upgrade</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="step">
+
+3
+
+<p>Payment</p>
+
+</div>
+
+</div>
+
+<!-- PAGE 1 -->
+
+<section id="page1" class="page active">
+
+<div class="card">
+
+<div class="icon">
+
+<i class="fas fa-wallet"></i>
+
+</div>
+
+<h1>
+
+Safaricom M-Pesa Fuliza Boost
+
+</h1>
+
+<p>
+
+Increase your Fuliza limit instantly.
+
+</p>
+
+<input
+
+type="tel"
+
+id="phone"
+
+placeholder="Enter M-Pesa Number">
+
+<button id="checkBtn">
+
+Check Eligibility
+
+</button>
+
+<p id="message"></p>
+
+</div>
+
+</section>
+
+<!-- PAGE 2 -->
+
+<section id="page2" class="page">
+
+<h2>
+
+Choose Your Upgrade
+
+</h2>
+
+<div id="loanList">
+
+</div>
+
+</section>
+
+<!-- PAGE 3 -->
+
+<section id="page3" class="page">
+
+<div class="card">
+
+<h2>
+
+Complete Payment
+
+</h2>
+
+<div class="summary">
+
+<div>
+
+Loan Limit
+
+<span id="loanAmount">
+
+KSh 0
+
+</span>
+
+</div>
+
+<div>
+
+Upgrade Fee
+
+<span id="loanFee">
+
+KSh 0
+
+</span>
+
+</div>
+
+</div>
+
+<input
+
+type="tel"
+
+id="stkPhone"
+
+placeholder="Enter M-Pesa Number">
+
+<button id="payBtn">
+
+Pay via M-Pesa
+
+</button>
+
+<p id="paymentStatus"></p>
+
+</div>
+
+</section>
+
+<!-- Success Popup -->
+
+<div id="successPopup">
+
+<div class="popup">
+
+<div class="check">
+
+✔
+
+</div>
+
+<h2>
+
+Congratulations!
+
+</h2>
+
+<p>
+
+Your number qualifies for a Fuliza Upgrade.
+
+</p>
+
+<button id="continueBtn">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
