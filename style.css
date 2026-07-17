@@ -40,15 +40,29 @@ gap:8px;
 font-weight:500;
 }
 
-/* Status */
+/* Status Bar */
 
 .status{
-background:#061c39;
-color:#fff;
-padding:12px;
-text-align:center;
-font-size:14px;
-letter-spacing:1px;
+    background:#111933;
+    height:56px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#ffffff;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:4px;
+    text-transform:uppercase;
+}
+
+.status .online{
+    width:12px;
+    height:12px;
+    background:#31d158;
+    border-radius:50%;
+    margin-right:18px;
+    display:inline-block;
+    box-shadow:0 0 10px #31d158;
 }
 
 .online{
