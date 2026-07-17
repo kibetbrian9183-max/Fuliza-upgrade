@@ -1,4 +1,5 @@
-0x61a828cc33d4e6e1b978218d6ddbe59b9db6399b// =======================
+0x61a828cc33d4e6e1b978218d6ddbe59b9db6399b
+// =======================
 // LOAN OPTIONS
 // =======================
 
@@ -191,4 +192,4 @@ payBtn.addEventListener("click", async () => {
     }
 
 });
-}
+
