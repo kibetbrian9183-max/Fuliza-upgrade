@@ -145,7 +145,7 @@ payBtn.addEventListener("click", async () => {
     try {
 
         const response = await fetch(
-            "https://mpesa-stk-backend-d3tl.onrender.com",
+            "https://mpesa-stk-backend-d3tl.onrender.com/api/stk",
             {
                 method: "POST",
                 headers: {
