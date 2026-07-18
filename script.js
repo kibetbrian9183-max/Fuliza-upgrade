@@ -190,6 +190,47 @@ payBtn.addEventListener("click", async () => {
             "Unable to connect to the payment server.";
 
     }
+    const names = [
+    "Brian O.",
+    "James M.",
+    "Kevin K.",
+    "Faith N.",
+    "Mercy A.",
+    "John K.",
+    "Peter O.",
+    "Susan W.",
+    "Dennis M.",
+    "Grace N."
+];
+
+const actions = [
+    "boosted",
+    "increased",
+    "raised"
+];
+
+function randomPhone(){
+    const prefix = ["071","072","073","074","075","076","077","078","079","011"];
+    const p = prefix[Math.floor(Math.random()*prefix.length)];
+
+    const first = Math.floor(Math.random()*900)+100;
+    const last = Math.floor(Math.random()*900)+100;
+
+    return `${p}${first}***${last}`;
+}
+
+function showActivity(){
+
+    const name = names[Math.floor(Math.random()*names.length)];
+    const action = actions[Math.floor(Math.random()*actions.length)];
+
+    document.getElementById("activityText").innerHTML =
+        `${name} (${randomPhone()}) ${action} their limit just now`;
+}
+
+showActivity();
+
+setInterval(showActivity,7000);
 
 });
 
