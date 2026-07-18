@@ -476,107 +476,88 @@ padding:0 15px;
     background:#38b449;
     color:#fff;
     display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:bold;
-}
+/* ==========================
+   RESPONSIVE
+========================== */
 
-.review-text p{
-    margin-top:6px;
-    color:#666;
-}
-
-/* Mobile */
-
-@media(max-width:768px){
-
-.support-bar{
-    flex-direction:column;
-    gap:10px;
-    text-align:center;
-}
-
-.support-center{
-    width:100%;
-    justify-content:center;
-}
 @media (max-width:768px){
 
-.status{
-    font-size:14px;
-    letter-spacing:2px;
-    height:50px;
-    text-align:center;
-    padding:0 10px;
-}
-
-.status .online{
-    margin-right:10px;
-    .live-activity{
-    position:fixed;
-    top:80px;
-    left:50%;
-    transform:translateX(-50%);
-    width:330px;
-    background:#fff;
-    border-radius:40px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-    padding:15px;
-    box-shadow:0 10px 25px rgba(0,0,0,.2);
-    z-index:9999;
-    animation:slideDown .5s ease;
-}
-
-.icon{
-    width:55px;
-    height:55px;
-    background:#FFF8E6;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-}
-
-.content small{
-    color:#888;
-    font-weight:700;
-}
-
-.content p{
-    margin:2px 0;
-    font-size:18px;
-    font-weight:700;
-}
-
-@keyframes slideDown{
-    from{
-        opacity:0;
-        transform:translate(-50%,-30px);
+    header{
+        flex-direction:column;
+        gap:10px;
     }
-    to{
-        opacity:1;
-        transform:translate(-50%,0);
+
+    .card{
+        margin:20px;
+        padding:25px;
     }
-    .live-activity{
+
+    .card h1{
+        font-size:28px;
+    }
+
+    .loan-card{
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+    }
+
+    .upgrade-btn{
+        width:100%;
+    }
+
+    .progress{
+        padding:0 15px;
+    }
+
+    .support-bar{
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+
+    .support-center{
+        width:100%;
+        justify-content:center;
+    }
+
+    .status{
+        font-size:14px;
+        letter-spacing:2px;
+        height:50px;
+        text-align:center;
+        padding:0 10px;
+    }
+
+    .status .online{
+        margin-right:10px;
+    }
+
+}
+
+/* ==========================
+   LIVE ACTIVITY
+========================== */
+
+.live-activity{
     position:fixed;
     top:80px;
     left:50%;
     transform:translateX(-50%);
     width:340px;
+    max-width:90%;
     background:#fff;
-    border-radius:50px;
+    border-radius:40px;
     padding:15px 20px;
     display:flex;
     align-items:center;
     gap:15px;
     box-shadow:0 10px 30px rgba(0,0,0,.2);
     z-index:99999;
+    animation:slideDown .5s ease;
 }
 
-.icon{
+.live-activity .icon{
     width:50px;
     height:50px;
     border-radius:50%;
@@ -585,22 +566,31 @@ padding:0 15px;
     align-items:center;
     justify-content:center;
     font-size:22px;
+    flex-shrink:0;
 }
 
-.content p{
-    margin:0;
-    font-size:16px;
-    font-weight:bold;
-}
-
-.content small{
+.live-activity .content small{
+    display:block;
     color:#888;
     font-size:12px;
-}
-}
-}
-
-}
+    font-weight:700;
 }
 
+.live-activity .content p{
+    margin:3px 0 0;
+    font-size:15px;
+    font-weight:600;
+    color:#222;
+}
+
+@keyframes slideDown{
+    from{
+        opacity:0;
+        transform:translate(-50%,-30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translate(-50%,0);
+    }
 }
