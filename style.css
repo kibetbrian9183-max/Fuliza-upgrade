@@ -560,6 +560,43 @@ padding:0 15px;
         opacity:1;
         transform:translate(-50%,0);
     }
+    .live-activity{
+    position:fixed;
+    top:80px;
+    left:50%;
+    transform:translateX(-50%);
+    width:340px;
+    background:#fff;
+    border-radius:50px;
+    padding:15px 20px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    z-index:99999;
+}
+
+.icon{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#FFF5D6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.content p{
+    margin:0;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.content small{
+    color:#888;
+    font-size:12px;
+}
 }
 }
 
