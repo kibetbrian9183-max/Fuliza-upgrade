@@ -476,6 +476,10 @@ padding:0 15px;
     background:#38b449;
     color:#fff;
     display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
 /* ==========================
    RESPONSIVE
 ========================== */
