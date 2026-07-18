@@ -192,7 +192,7 @@ payBtn.addEventListener("click", async () => {
     }
 
 });
-}); // End of payBtn.addEventListener
+// End of payBtn.addEventListener
 
 // =======================
 // LIVE ACTIVITY
