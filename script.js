@@ -47,13 +47,12 @@ let customerPhone = "";
 checkBtn.addEventListener("click", () => {
 
     customerPhone = phone.value.trim();
-const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
 
-if (!phoneRegex.test(phoneNumber)) {
-    paymentStatus.style.color = "red";
-    paymentStatus.innerHTML = "Enter a valid Safaricom M-Pesa number.";
-    return;
-}
+    const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
+
+    if (!phoneRegex.test(customerPhone)) {
+        alert("Enter a valid Safaricom M-Pesa number.");
+        return;
     }
 
     loader.style.display = "flex";
@@ -67,7 +66,6 @@ if (!phoneRegex.test(phoneNumber)) {
     }, 2500);
 
 });
-
 // =======================
 // CONTINUE
 // =======================
@@ -133,11 +131,13 @@ payBtn.addEventListener("click", async () => {
     const phoneNumber = stkPhone.value.trim();
     const amount = Number(loanFee.innerHTML.replace(/[^\d]/g, ""));
 
-    if (phoneNumber.length < 10) {
-        paymentStatus.style.color = "red";
-        paymentStatus.innerHTML = "Please enter a valid M-Pesa number.";
-        return;
-    }
+    const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
+
+if (!phoneRegex.test(phoneNumber)) {
+    paymentStatus.style.color = "red";
+    paymentStatus.innerHTML = "Enter a valid Safaricom M-Pesa number.";
+    return;
+}
 
     paymentStatus.style.color = "#0ba84b";
     paymentStatus.innerHTML = "Sending STK Push...";
