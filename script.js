@@ -144,7 +144,7 @@ if (!phoneRegex.test(phoneNumber)) {
 
     try {
 
-        const response = await fetch("/api/mpesa/stkpush", {
+        const response = await fetch("https://fuliza-backend-xgsm.onrender.com/api/mpesa/stkpush", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -192,7 +192,7 @@ async function pollPaymentStatus(checkoutRequestId) {
         try {
 
             const response = await fetch(
-                `/api/mpesa/status/${checkoutRequestId}`
+                'https://fuliza-backend-xgsm.onrender.com/api/mpesa/status/${checkoutRequestId}`
             );
 
             const data = await response.json();
