@@ -47,10 +47,13 @@ let customerPhone = "";
 checkBtn.addEventListener("click", () => {
 
     customerPhone = phone.value.trim();
+const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
 
-    if (customerPhone.length < 10) {
-        alert("Please enter a valid M-Pesa number.");
-        return;
+if (!phoneRegex.test(phoneNumber)) {
+    paymentStatus.style.color = "red";
+    paymentStatus.innerHTML = "Enter a valid Safaricom M-Pesa number.";
+    return;
+}
     }
 
     loader.style.display = "flex";
