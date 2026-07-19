@@ -1,4 +1,3 @@
-0x61a828cc33d4e6e1b978218d6ddbe59b9db6399b
 // =======================
 // LOAN OPTIONS
 // =======================
@@ -129,9 +128,7 @@ loans.forEach((loan) => {
 payBtn.addEventListener("click", async () => {
 
     const phoneNumber = stkPhone.value.trim();
-
-    // Remove commas and "KSh" from the fee
-    const amount = loanFee.innerHTML.replace(/[^\d]/g, "");
+    const amount = Number(loanFee.innerHTML.replace(/[^\d]/g, ""));
 
     if (phoneNumber.length < 10) {
         paymentStatus.style.color = "red";
@@ -144,54 +141,92 @@ payBtn.addEventListener("click", async () => {
 
     try {
 
-        const response = await fetch(
-            "https://mpesa-stk-backend-d3tl.onrender.com/api/stk",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    phone: phoneNumber,
-                    amount: Number(amount)
-                })
-            }
-        );
+        const response = await fetch("/api/mpesa/stkpush", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                phone: phoneNumber,
+                amount: amount,
+                accountReference: "FulizaBoost",
+                transactionDesc: "Fuliza Upgrade"
+            })
+        });
 
         const data = await response.json();
 
-        if (response.ok) {
-
-            paymentStatus.style.color = "#0ba84b";
-
-            paymentStatus.innerHTML =
-                "✅ STK Push sent successfully. Check your phone and enter your M-Pesa PIN.";
-
-            console.log(data);
-
-        } else {
-
+        if (!response.ok) {
             paymentStatus.style.color = "red";
-
-            paymentStatus.innerHTML =
-                data.message || "Unable to send STK Push.";
-
-            console.log(data);
-
+            paymentStatus.innerHTML = data.error || "Unable to send STK Push.";
+            return;
         }
 
-    } catch (error) {
+        paymentStatus.innerHTML =
+            "✅ STK Push sent. Please check your phone and enter your M-Pesa PIN.";
 
-        console.error(error);
+        pollPaymentStatus(data.checkoutRequestId);
+
+    } catch (err) {
 
         paymentStatus.style.color = "red";
-
         paymentStatus.innerHTML =
             "Unable to connect to the payment server.";
+
+        console.error(err);
 
     }
 
 });
+// =======================
+// PAYMENT STATUS
+// =======================
+
+async function pollPaymentStatus(checkoutRequestId) {
+
+    const timer = setInterval(async () => {
+
+        try {
+
+            const response = await fetch(
+                `/api/mpesa/status/${checkoutRequestId}`
+            );
+
+            const data = await response.json();
+
+            if (data.status === "pending") {
+                return;
+            }
+
+            clearInterval(timer);
+
+            if (data.status === "success") {
+
+                paymentStatus.style.color = "#0ba84b";
+                paymentStatus.innerHTML =
+                    `✅ Payment Successful.<br>Receipt: ${data.mpesaReceipt}`;
+
+            } else {
+
+                paymentStatus.style.color = "red";
+                paymentStatus.innerHTML =
+                    data.resultDesc || "Payment Failed.";
+
+            }
+
+        } catch (err) {
+
+            clearInterval(timer);
+
+            paymentStatus.style.color = "red";
+            paymentStatus.innerHTML =
+                "Unable to verify payment.";
+
+        }
+
+    }, 3000);
+
+}
 // End of payBtn.addEventListener
 
 // =======================
