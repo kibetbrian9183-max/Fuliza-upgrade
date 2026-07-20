@@ -192,8 +192,8 @@ async function pollPaymentStatus(checkoutRequestId) {
         try {
 
             const response = await fetch(
-                'https://fuliza-backend-xgsm.onrender.com/api/mpesa/status/${checkoutRequestId}`
-            );
+    `https://fuliza-backend-xgsm.onrender.com/api/mpesa/status/${checkoutRequestId}`
+);
 
             const data = await response.json();
 
