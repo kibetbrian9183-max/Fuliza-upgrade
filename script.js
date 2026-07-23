@@ -272,20 +272,13 @@ payBtn.addEventListener("click", async()=>{
 
     }
 
-    catch(error){
+    catch (error) {
+    console.error("Fetch error:", error);
 
-
-        console.error(error);
-
-
-        paymentStatus.style.color="red";
-
-
-        paymentStatus.innerHTML =
-        "Unable to connect to payment server.";
-
-    }
-
+    paymentStatus.style.color = "red";
+    paymentStatus.innerHTML =
+        "Unable to connect to payment server.<br>" + error.message;
+}
 
 });
 
