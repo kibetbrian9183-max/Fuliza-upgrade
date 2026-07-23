@@ -14,7 +14,7 @@ const loans = [
 // BACKEND CONFIG
 // =======================
 
-const API_BASE_URL = "https://fuliza-backend-xgsm.onrender.com";
+const API_BASE_URL = "https://hostel-booking-app-vktw.onrender.com";
 
 
 // =======================
@@ -171,31 +171,30 @@ payBtn.addEventListener("click", async()=>{
     "Sending STK Push...";
 
 
-    try {
-    console.log("Sending request to:", `${API_BASE_URL}/api/mpesa/stkpush`);
+    try{
 
-    const response = await fetch(`${API_BASE_URL}/api/mpesa/stkpush`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            phone: phoneNumber,
-            amount: amount,
-            accountReference: "FulizaBoost",
-            transactionDesc: "Fuliza Upgrade"
-        })
-    });
+        const response = await fetch(
+            `${API_BASE_URL}/api/mpesa/stkpush`,
+            {
+                method:"POST",
 
-    console.log("HTTP Status:", response.status);
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-    const text = await response.text();
-    console.log("Response:", text);
-}
-catch (error) {
-    console.error("Fetch failed:", error);
-    alert(error.message);
-}
+                body:JSON.stringify({
+
+                    phone: phoneNumber,
+
+                    amount: amount,
+
+                    accountReference:"FulizaBoost",
+
+                    transactionDesc:"Fuliza Upgrade"
+
+                })
+            }
+        );
 
 
         // READ RESPONSE SAFELY
@@ -273,13 +272,20 @@ catch (error) {
 
     }
 
-    catch (error) {
-    console.error("Fetch error:", error);
+    catch(error){
 
-    paymentStatus.style.color = "red";
-    paymentStatus.innerHTML =
-        "Unable to connect to payment server.<br>" + error.message;
-}
+
+        console.error(error);
+
+
+        paymentStatus.style.color="red";
+
+
+        paymentStatus.innerHTML =
+        "Unable to connect to payment server.";
+
+    }
+
 
 });
 
