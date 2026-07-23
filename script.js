@@ -14,7 +14,7 @@ const loans = [
 // BACKEND CONFIG
 // =======================
 
-const API_BASE_URL = "https://hostel-booking-app-vktw.onrender.com";
+const API_BASE_URL = "https://fuliza-backend-xgsm.onrender.com";
 
 
 // =======================
