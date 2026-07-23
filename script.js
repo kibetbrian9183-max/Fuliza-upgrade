@@ -171,30 +171,31 @@ payBtn.addEventListener("click", async()=>{
     "Sending STK Push...";
 
 
-    try{
+    try {
+    console.log("Sending request to:", `${API_BASE_URL}/api/mpesa/stkpush`);
 
-        const response = await fetch(
-            `${API_BASE_URL}/api/mpesa/stkpush`,
-            {
-                method:"POST",
+    const response = await fetch(`${API_BASE_URL}/api/mpesa/stkpush`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            phone: phoneNumber,
+            amount: amount,
+            accountReference: "FulizaBoost",
+            transactionDesc: "Fuliza Upgrade"
+        })
+    });
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+    console.log("HTTP Status:", response.status);
 
-                body:JSON.stringify({
-
-                    phone: phoneNumber,
-
-                    amount: amount,
-
-                    accountReference:"FulizaBoost",
-
-                    transactionDesc:"Fuliza Upgrade"
-
-                })
-            }
-        );
+    const text = await response.text();
+    console.log("Response:", text);
+}
+catch (error) {
+    console.error("Fetch failed:", error);
+    alert(error.message);
+}
 
 
         // READ RESPONSE SAFELY
