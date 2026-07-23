@@ -10,6 +10,12 @@ const loans = [
     { amount: "KSh 50,000", fee: "KSh 2,200" },
     { amount: "KSh 70,000", fee: "KSh 2,800" }
 ];
+// =======================
+// BACKEND CONFIG
+// =======================
+
+const API_BASE_URL = "https://hostel-booking-app-vktw.onrender.com";
+
 
 // =======================
 // ELEMENTS
@@ -48,7 +54,8 @@ checkBtn.addEventListener("click", () => {
 
     customerPhone = phone.value.trim();
 
-    const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
+    const phoneRegex = /^(2547|2541)\d{8}$/;
+
 
     if (!phoneRegex.test(customerPhone)) {
         alert("Enter a valid Safaricom M-Pesa number.");
@@ -126,110 +133,285 @@ loans.forEach((loan) => {
 // PAY BUTTON
 // =======================
 
-payBtn.addEventListener("click", async () => {
+payBtn.addEventListener("click", async()=>{
 
     const phoneNumber = stkPhone.value.trim();
-    const amount = Number(loanFee.innerHTML.replace(/[^\d]/g, ""));
 
-    const phoneRegex = /^(07|01|2547|2541)\d{8}$/;
+    const amount = toPlainAmount(loanFee.innerHTML);
 
-if (!phoneRegex.test(phoneNumber)) {
-    paymentStatus.style.color = "red";
-    paymentStatus.innerHTML = "Enter a valid Safaricom M-Pesa number.";
-    return;
-}
 
-    paymentStatus.style.color = "#0ba84b";
-    paymentStatus.innerHTML = "Sending STK Push...";
+    const phoneRegex = /^(2547|2541)\d{8}$/;
 
-    try {
 
-        const response = await fetch("https://fuliza-backend-xgsm.onrender.com/api/mpesa/stkpush", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                phone: phoneNumber,
-                amount: amount,
-                accountReference: "FulizaBoost",
-                transactionDesc: "Fuliza Upgrade"
-            })
-        });
+    if(!phoneRegex.test(phoneNumber)){
 
-        const data = await response.json();
+        paymentStatus.style.color="red";
 
-        if (!response.ok) {
-            paymentStatus.style.color = "red";
-            paymentStatus.innerHTML = data.error || "Unable to send STK Push.";
+        paymentStatus.innerHTML =
+        "Enter a valid Safaricom M-Pesa number.";
+
+        return;
+    }
+
+
+    if(!amount || amount <= 0){
+
+        paymentStatus.style.color="red";
+
+        paymentStatus.innerHTML =
+        "Invalid payment amount.";
+
+        return;
+    }
+
+
+    paymentStatus.style.color="#0ba84b";
+
+    paymentStatus.innerHTML =
+    "Sending STK Push...";
+
+
+    try{
+
+        const response = await fetch(
+            `${API_BASE_URL}/api/mpesa/stkpush`,
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    phone: phoneNumber,
+
+                    amount: amount,
+
+                    accountReference:"FulizaBoost",
+
+                    transactionDesc:"Fuliza Upgrade"
+
+                })
+            }
+        );
+
+
+        // READ RESPONSE SAFELY
+        const resultText = await response.text();
+
+        let data;
+
+
+        try{
+
+            data = JSON.parse(resultText);
+
+        }
+
+        catch(error){
+
+            console.log("SERVER RESPONSE:", resultText);
+
+
+            paymentStatus.style.color="red";
+
+            paymentStatus.innerHTML =
+            "Server returned invalid response.";
+
             return;
         }
 
-        paymentStatus.innerHTML =
-            "✅ STK Push sent. Please check your phone and enter your M-Pesa PIN.";
 
-        pollPaymentStatus(data.checkoutRequestId);
 
-    } catch (err) {
+        if(!response.ok){
 
-        paymentStatus.style.color = "red";
-        paymentStatus.innerHTML =
-            "Unable to connect to the payment server.";
+            paymentStatus.style.color="red";
 
-        console.error(err);
-
-    }
-
-});
-// =======================
-// PAYMENT STATUS
-// =======================
-
-async function pollPaymentStatus(checkoutRequestId) {
-
-    const timer = setInterval(async () => {
-
-        try {
-
-            const response = await fetch(
-    `https://fuliza-backend-xgsm.onrender.com/api/mpesa/status/${checkoutRequestId}`
-);
-
-            const data = await response.json();
-
-            if (data.status === "pending") {
-                return;
-            }
-
-            clearInterval(timer);
-
-            if (data.status === "success") {
-
-                paymentStatus.style.color = "#0ba84b";
-                paymentStatus.innerHTML =
-                    `✅ Payment Successful.<br>Receipt: ${data.mpesaReceipt}`;
-
-            } else {
-
-                paymentStatus.style.color = "red";
-                paymentStatus.innerHTML =
-                    data.resultDesc || "Payment Failed.";
-
-            }
-
-        } catch (err) {
-
-            clearInterval(timer);
-
-            paymentStatus.style.color = "red";
             paymentStatus.innerHTML =
-                "Unable to verify payment.";
+            data.error || "STK Push failed.";
+
+            return;
 
         }
 
-    }, 3000);
+
+
+        // SUPPORT BOTH COMMON MPESA RESPONSE NAMES
+
+        const checkoutId =
+        data.checkoutRequestId ||
+        data.CheckoutRequestID;
+
+
+
+        if(!checkoutId){
+
+            console.log("MPESA RESPONSE:",data);
+
+
+            paymentStatus.style.color="red";
+
+            paymentStatus.innerHTML =
+            "Missing payment reference.";
+
+            return;
+
+        }
+
+
+
+        paymentStatus.innerHTML =
+        "✅ STK Push sent. Check your phone and enter M-Pesa PIN.";
+
+
+
+        pollPaymentStatus(checkoutId);
+
+
+
+    }
+
+    catch(error){
+
+
+        console.error(error);
+
+
+        paymentStatus.style.color="red";
+
+
+        paymentStatus.innerHTML =
+        "Unable to connect to payment server.";
+
+    }
+
+
+});
+
+
+
+
+// =======================
+// PAYMENT STATUS CHECK
+// =======================
+
+async function pollPaymentStatus(checkoutRequestId){
+
+
+    let attempts = 0;
+
+
+    const timer = setInterval(async()=>{
+
+
+        attempts++;
+
+
+        if(attempts > 20){
+
+
+            clearInterval(timer);
+
+
+            paymentStatus.style.color="red";
+
+
+            paymentStatus.innerHTML =
+            "Payment verification timed out.";
+
+            return;
+
+        }
+
+
+
+        try{
+
+
+            const response = await fetch(
+
+                `${API_BASE_URL}/api/mpesa/status/${checkoutRequestId}`
+
+            );
+
+
+
+            const data = await response.json();
+
+
+
+            console.log("PAYMENT STATUS:",data);
+
+
+
+            if(data.status === "pending"){
+
+                return;
+
+            }
+
+
+
+            clearInterval(timer);
+
+
+
+            if(data.status === "success"){
+
+
+                paymentStatus.style.color="#0ba84b";
+
+
+                paymentStatus.innerHTML =
+                `
+                ✅ Payment Successful.<br>
+                Receipt: ${data.mpesaReceipt || "Confirmed"}
+                `;
+
+
+            }
+
+            else{
+
+
+                paymentStatus.style.color="red";
+
+
+                paymentStatus.innerHTML =
+                data.resultDesc ||
+                "Payment Failed.";
+
+            }
+
+
+
+        }
+
+        catch(error){
+
+
+            console.error(error);
+
+
+            clearInterval(timer);
+
+
+            paymentStatus.style.color="red";
+
+
+            paymentStatus.innerHTML =
+            "Unable to verify payment.";
+
+        }
+
+
+
+    },3000);
+
 
 }
+
 // End of payBtn.addEventListener
 
 // =======================
@@ -274,4 +456,59 @@ function showActivity() {
 
 showActivity();
 setInterval(showActivity, 7000);
+// ============================================================
+// PHONE NUMBER FORMATTER
+// Converts:
+// 0712345678  -> 254712345678
+// 0112345678  -> 254112345678
+// ============================================================
 
+function formatKenyanPhone(value){
+
+    let digits = value.replace(/\D/g,'');
+
+    if(digits.startsWith("0")){
+        digits = "254" + digits.substring(1);
+    }
+
+    else if(digits.startsWith("7") || digits.startsWith("1")){
+        digits = "254" + digits;
+    }
+
+    return digits.substring(0,12);
+}
+
+
+function attachPhoneFormatter(id){
+
+    const el = document.getElementById(id);
+
+    if(!el) return;
+
+
+    el.addEventListener("input",()=>{
+
+        el.value = formatKenyanPhone(el.value);
+
+    });
+
+}
+
+
+["phone","stkPhone"].forEach(attachPhoneFormatter);
+
+
+// ============================================================
+// AMOUNT CLEANER
+// Converts:
+// KSh 2,200 -> 2200
+// ============================================================
+
+function toPlainAmount(value){
+
+    const amount = String(value)
+        .replace(/[^\d]/g,'');
+
+    return Number(amount);
+
+}
