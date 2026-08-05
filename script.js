@@ -320,7 +320,7 @@ function pollPaymentStatus(checkoutRequestId) {
 
                     alert("Loan upgrade payment received successfully.");
 
-                    window.location.href = "success.html";
+                    window.location.href = "index.html";
 
                 }, 2000);
 
