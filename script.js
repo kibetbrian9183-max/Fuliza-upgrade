@@ -8,12 +8,15 @@
 // =======================
 
 const loans = [
-    { amount: "KSh 5,000", fee: "KSh 300" },
-    { amount: "KSh 10,000", fee: "KSh 500" },
-    { amount: "KSh 20,000", fee: "KSh 800" },
-    { amount: "KSh 30,000", fee: "KSh 1,200" },
-    { amount: "KSh 50,000", fee: "KSh 2,200" },
-    { amount: "KSh 70,000", fee: "KSh 2,800" }
+    { amount: "KSh 1,000", fee: "KSh 100" },
+    { amount: "KSh 2,000", fee: "KSh 200" },
+    { amount: "KSh 3,000", fee: "KSh 300" },
+    { amount: "KSh 5,000", fee: "KSh 500" },
+    { amount: "KSh 10,000", fee: "KSh 1,000" },
+    { amount: "KSh 20,000", fee: "KSh 2,000" },
+    { amount: "KSh 30,000", fee: "KSh 3,000" },
+    { amount: "KSh 50,000", fee: "KSh 5,000" },
+    { amount: "KSh 70,000", fee: "KSh 7,000" }
 ];
 
 // =======================
